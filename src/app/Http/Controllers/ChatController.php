@@ -8,6 +8,8 @@ use App\Models\Product;
 use App\Models\User;
 use App\Models\Chat;
 use App\Http\Requests\ChatRequest;
+use Illuminate\Support\Facades\DB;
+
 
 class ChatController extends Controller
 {
@@ -22,19 +24,32 @@ class ChatController extends Controller
         $isBuyer=$user_id== $transaction->buyer_id;
         $isSeller=$user_id== $transaction->seller_id;
 
-        $anotherTransactions=null;
+        $anotherUser = $isBuyer ? User::find($transaction->seller_id) : User::find($transaction->buyer_id);
 
-        if($isBuyer){
-            $anotherUser=User::find($transaction->seller_id);
-        }else if($isSeller){
-            $anotherUser=User::find($transaction->buyer_id);
-            $anotherTransactions = Transaction::with('product')
-            ->where('seller_id', $transaction->seller_id)
-            ->where('id','!=', $transaction_id)
-            ->withMax('chats', 'updated_at')
-            ->orderBy('chats_max_updated_at', 'desc')
+        // $anotherTransactions = Transaction::with('product')->where(function($query) use ($user_id) {
+        //     $query->where('buyer_id', $user_id)
+        //     ->orWhere('seller_id', $user_id);
+        // })
+        // ->where('id', '!=', $transaction_id)
+        // ->withMax('chats', 'updated_at')
+        // ->orderBy('chats_max_updated_at', 'desc')
+        // ->get();
+
+
+        $anotherTransactions = Transaction::with('product')
+            ->where(function ($query) use ($user_id) {
+                $query->where('buyer_id', $user_id)
+                    ->orWhere('seller_id', $user_id);
+            })
+            ->where('id', '!=', $transaction_id)
+            ->addSelect([
+                'latest_other_user_chat' => DB::table('chats')
+                    ->selectRaw('MAX(updated_at)')
+                    ->whereColumn('transaction_id', 'transactions.id')
+                    ->where('sender_id', '!=', $user_id)
+            ])
+            ->orderByDesc('latest_other_user_chat')
             ->get();
-        }
 
         $product=Product::find($transaction->product_id);
 

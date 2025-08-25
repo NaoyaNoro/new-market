@@ -20,6 +20,7 @@
     color: black;
     text-align: center;
     border-radius: 5px;
+    padding: 5px;
 }
 
 .another__transaction-link{
@@ -79,6 +80,7 @@
     border-bottom: 2px #5f5f5f solid;
     gap: 30px;
 }
+
 .transaction__name{
     font-size: 48px;
     font-weight: bold;
@@ -91,6 +93,7 @@
 .transaction__chat{
     width: 100%;
     padding: 10px 30px;
+    flex-grow: 1;
 }
 
 .chat__item{
@@ -144,10 +147,10 @@
 .chat__edit-textarea{
     width: 40%;
     resize: none;
-    background-color: #02f702;
+    background-color: #D9D9D9;
     border-radius: 10px;
     padding: 5px;
-    border:#02f702 1px solid ;
+    border:#D9D9D9 1px solid ;
 }
 
 .edit__chat-button,.delete__chat-button{
@@ -159,15 +162,33 @@
     cursor: pointer;
 }
 
-.send__chat {
-    margin-top: auto;
-    margin: 50px 30px;
-}
 
-.chat__form{
+/* チャットの送信機能 */
+.send-chat__content{
     display: flex;
     flex-direction: column;
+    position: sticky;
+    bottom: 0;
+    background-color: #ffffff;
+    padding: 10px;
     width: 100%;
+}
+
+.chat__form {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+
+.send__chat--message {
+    width: 75%;
+}
+
+.send__chat-input {
+    width: 100%;
+    height: 40px;
 }
 
 .image__text {
@@ -182,29 +203,6 @@
 
 .image__input {
     display: none;
-}
-
-.send__chat-input{
-    width: 100%;
-    height: 40px;
-    margin-bottom: 30px;
-}
-
-.send-chat__image{
-    height: 80px;
-    width: 80px;
-}
-
-.send__chat--contents{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.send__chat--contents-image{
-    display: flex;
-    align-items: center;
-    gap: 40px;
 }
 
 .send__chat-button{
@@ -322,12 +320,52 @@
     cursor: pointer;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px){
     .transaction__sidbar h2 {
         font-size: 20px;
     }
 
     .another__transaction {
-        font-size: 18px;
+        font-size: 15px;
+        width: 90%;
+        margin: 20px auto;
+    }
+
+    .transaction__ttl{
+        font-size: 23px;
+    }
+
+    .transaction__but {
+        font-size: 14px;
+    }
+
+    .profile__image{
+        width: 60px;
+        height: 60px;
+    }
+
+    .transaction__name {
+        font-size: 30px;
+        font-weight: bold;
+    }
+    
+    .transaction__price {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 900px) {
+    .send__chat-button img{
+        width: 40px;
+    }
+
+    .image__text {
+        background-color: white;
+        color: #ff5555;
+        padding: 5px;
+        font-size: 10px;
+        border-radius: 5px;
+        margin-left: 20px;
+        border: 1px solid #ff5555;
     }
 }

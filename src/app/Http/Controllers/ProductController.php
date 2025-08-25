@@ -72,9 +72,6 @@ class ProductController extends Controller
 
         $seller_id=$product->sells->user_id;
 
-        $isTransaction=Transaction::where('product_id',$product->id)->where('status', 'open')->exists();
-        $isCompletedTransaction= Transaction::where('product_id', $product->id)->where('status', 'completed')->where('buyer_id', auth()->id())->exists();
-
         $comments=Comment::where('product_id', $request->item_id)->with(['profile','users'])->get();
         $mylists=MyList::where('product_id', $request->item_id)->get();
 
@@ -89,7 +86,7 @@ class ProductController extends Controller
 
         $soldOutProductIDs = Purchase::pluck('product_id')->toArray();
 
-        return view('detail',compact('product','comments','mylists','isFavorited', 'isCommented','soldOutProductIDs','seller_id','isTransaction', 'isCompletedTransaction'));
+        return view('detail',compact('product','comments','mylists','isFavorited', 'isCommented','soldOutProductIDs','seller_id'));
     }
 
     public function comment(CommentRequest $request)

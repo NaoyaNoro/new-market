@@ -131,6 +131,7 @@
 }
 
 .sum-unread__message {
+    display: inline-block;
     background-color: red;
     color: white;
     font-size: 12px;
@@ -140,7 +141,6 @@
     line-height: 20px;
     text-align: center;
     font-weight: bold;
-    padding: 2px;
 }
 
 /* 評価 */

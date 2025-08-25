@@ -21,9 +21,9 @@ class DatabaseSeeder extends Seeder
             Category_ProductTableSeeder::class,
             CommentsTableSeeder::class,
             ProfilesTableSeeder::class,
-            TransactionsTableSeeder::class,
-            ChatsTableSeeder::class,
             SellTableSeeder::class
+            // TransactionsTableSeeder::class,
+            // ChatsTableSeeder::class,
         ]);
     }
 }

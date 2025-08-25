@@ -7,6 +7,8 @@ use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use App\Models\Purchase;
 use App\Models\Profile;
+use App\Models\Sell;
+use App\Models\Transaction;
 use App\Http\Requests\PurchaseRequest;
 
 
@@ -70,14 +72,25 @@ class StripePaymentController extends Controller
         $user = auth()->user();
         $profile = Profile::where('user_id', $user->id)->first();
 
-        $purchase=[
-            'product_id' => $session->metadata->product_id,
+        $product_id= $session->metadata->product_id;
+
+        $createPurchase=[
+            'product_id' => $product_id,
             'user_id'=>auth()->id(),
             'post_code'=>$profile->post_code,
             'address'=>$profile->address,
             'building'=>$profile->building,
         ];
-        Purchase::create($purchase);
+        $purchase=Purchase::create($createPurchase);
+
+        $transaction=[
+            'product_id'=> $product_id,
+            'purchase_id'=> $purchase->id,
+            'buyer_id'=>auth()->id(),
+            'seller_id'=>Sell::where('product_id', $product_id)->first()->user_id,
+        ];
+
+        Transaction::create($transaction);
         return view('thanks');
     }
 }
