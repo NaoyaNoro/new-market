@@ -44,7 +44,7 @@ class ChatController extends Controller
             ->where('id', '!=', $transaction_id)
             ->addSelect([
                 'latest_other_user_chat' => DB::table('chats')
-                    ->selectRaw('MAX(updated_at)')
+                    ->selectRaw('MAX(created_at)')
                     ->whereColumn('transaction_id', 'transactions.id')
                     ->where('sender_id', '!=', $user_id)
             ])
